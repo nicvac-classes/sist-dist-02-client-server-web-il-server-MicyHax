@@ -1,30 +1,22 @@
-const express= require('express'); //instanziamo la classe express
-const bodyParser =require('body-parser');
-const app = express();  
-// Middleware per il parsing delle richieste in arrivo
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+// Configurazione EJS
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Pagina web principale
 app.get('/', (req, res) => {
-    res.send(`
-        <form action="/greet" method="POST">
-            <label for="nome">Inserisci il tuo nome:</label>
-            <input type="text" id="nome" name="nome">
-            <button type="submit">Invia</button>
-        </form>
-    `);
+    res.render('form');
 });
 
-// Gestione della risposta POST + definizione percorso
-//req: contiene i dettagli della richiesta
-//res: oggetto usato per inviare la risposta
 app.post('/greet', (req, res) => {
-    const nome = req.body.nome;
-    res.send(`<h1>Ciao, ${nome}!</h1>`);
+    const name = req.body.name;
+    res.render('greet', { name: name });
 });
 
-// Avvio server
 const PORT = 3000;
 app.listen(PORT, () => {
-    console.log(`Il server Server è in esecuzione su http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });
